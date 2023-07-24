@@ -179,3 +179,11 @@ body{
     transform: rotate(calc(-30deg*var(--i)));
 
 }
+
+.digital-clock {
+    position: absolute;
+    bottom: -50px;
+    color: #999;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.5em;
+}

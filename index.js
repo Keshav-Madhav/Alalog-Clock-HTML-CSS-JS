@@ -7,6 +7,7 @@ let hourDot = document.querySelector('.hour-dot');
 let hourHand = document.getElementById('hour-hand');
 let minuteHand = document.getElementById('minute-hand');
 let secondHand = document.getElementById('second-hand');
+let digitalClock = document.querySelector('.digital-clock');
 
 function updateClock() {
     let now = new Date();
@@ -36,6 +37,10 @@ function updateClock() {
     hourHand.style.transform = `rotateZ(${currentTimeInHours * 30}deg)`;
     minuteHand.style.transform = `rotateZ(${(currentMinute + currentSecond / 60) * 6}deg)`;
     secondHand.style.transform = `rotateZ(${(currentSecond + currentMillisecond / 1000) * 6}deg)`;
+
+    // Update the digital clock
+    let currentTime = now.toLocaleTimeString();
+    digitalClock.textContent = currentTime;
 
     requestAnimationFrame(updateClock);
 }
