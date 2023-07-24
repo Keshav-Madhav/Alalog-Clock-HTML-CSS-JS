@@ -1,41 +1,43 @@
-let hh=document.getElementById('hh');
-let mm=document.getElementById('mm');
-let ss=document.getElementById('ss');
-let secDot=document.querySelector(".sec_dot");
-let minDot=document.querySelector(".min_dot");
-let hrDot=document.querySelector(".hr_dot");
-let hr= document.getElementById('hr');
-let mn= document.getElementById('mn');
-let sc= document.getElementById('sc');
+let hourStroke = document.getElementById('hour-stroke');
+let minuteStroke = document.getElementById('minute-stroke');
+let secondStroke = document.getElementById('second-stroke');
+let secondDot = document.querySelector('.second-dot');
+let minuteDot = document.querySelector('.minute-dot');
+let hourDot = document.querySelector('.hour-dot');
+let hourHand = document.getElementById('hour-hand');
+let minuteHand = document.getElementById('minute-hand');
+let secondHand = document.getElementById('second-hand');
 
-let hour= new Date().getHours();
-let minute= new Date().getMinutes();
-let second= new Date().getSeconds();
+function updateClock() {
+    let now = new Date();
+    let currentHour = now.getHours();
+    let currentMinute = now.getMinutes();
+    let currentSecond = now.getSeconds();
+    let currentMillisecond = now.getMilliseconds();
 
-//12 hour clock
-hh.style.strokeDashoffset= 510 - (510*hour)/12;
-//60 minutes per hours
-mm.style.strokeDashoffset= 630 - (630*minute)/60;
-//60 seconds per minute
-ss.style.strokeDashoffset= 710 - (710*second)/60;
+    // Calculate the current time in hours, including minutes and seconds
+    let currentTimeInHours = currentHour + currentMinute / 60 + currentSecond / 3600;
 
-setInterval(()=>{
-    let hour= new Date().getHours();
-    let minute= new Date().getMinutes();
-    let second= new Date().getSeconds();
+    // Update the strokeDashoffset for the hour hand
+    hourStroke.style.strokeDashoffset = -(510 * currentTimeInHours) / 12;
 
-    //12 hour clock
-    hh.style.strokeDashoffset= 480 + (480*hour)/12;
-    //60 minutes per hours
-    mm.style.strokeDashoffset= 630 - (630*minute)/60;
-    //60 seconds per minute
-    ss.style.strokeDashoffset= 760 - (760*second)/60;
+    // Update the strokeDashoffset for the minute hand
+    minuteStroke.style.strokeDashoffset = 630 - (630 * (currentMinute + currentSecond / 60)) / 60;
 
-    secDot.style.transform=`rotateZ(${second*6}deg)`
-    minDot.style.transform=`rotateZ(${minute*6}deg)`
-    hrDot.style.transform=`rotateZ(${hour*30}deg)`
+    // Update the strokeDashoffset for the second hand
+    secondStroke.style.strokeDashoffset = 760 - (760 * (currentSecond + currentMillisecond / 1000)) / 60;
 
-    hr.style.transform=`rotateZ(${hour*30}deg)`
-    mn.style.transform=`rotateZ(${minute*6}deg)`
-    sc.style.transform=`rotateZ(${second*6}deg)`
-});
+    // Update the rotation of the dots
+    secondDot.style.transform = `rotateZ(${(currentSecond + currentMillisecond / 1000) * 6}deg)`;
+    minuteDot.style.transform = `rotateZ(${(currentMinute + currentSecond / 60) * 6}deg)`;
+    hourDot.style.transform = `rotateZ(${currentTimeInHours * 30}deg)`;
+
+    // Update the rotation of the hands
+    hourHand.style.transform = `rotateZ(${currentTimeInHours * 30}deg)`;
+    minuteHand.style.transform = `rotateZ(${(currentMinute + currentSecond / 60) * 6}deg)`;
+    secondHand.style.transform = `rotateZ(${(currentSecond + currentMillisecond / 1000) * 6}deg)`;
+
+    requestAnimationFrame(updateClock);
+}
+
+updateClock();
